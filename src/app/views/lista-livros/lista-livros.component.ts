@@ -1,37 +1,38 @@
+import { Subscription } from 'rxjs';
 import { Component, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { Livro } from 'src/app/models/interfaces';
 import { LivroService } from 'src/app/service/livro.service';
+import { Livro } from 'src/app/models/interfaces';
 
 @Component({
   selector: 'app-lista-livros',
   templateUrl: './lista-livros.component.html',
   styleUrls: ['./lista-livros.component.css']
 })
-export class ListaLivrosComponent implements OnDestroy {
+export class ListaLivrosComponent implements OnDestroy{
 
   listaLivros: Livro[];
-  campoBusca: string = '';
-  subscription: Subscription;
-  livro: Livro;
+  campoBusca: string = ''
+  subscription: Subscription
+  livro: Livro
+
   constructor(private service: LivroService) { }
 
-  buscarLivros(){
-    this.subscription= this.service.buscar(this.campoBusca).subscribe({
+  buscarLivros() {
+    this.subscription = this.service.buscar(this.campoBusca).subscribe({
       next: (items) => {
-        this.listaLivros = this.livrosResultadosParaLivros(items)
+        this.listaLivros = this.livrosResultadoParaLivros(items)
       },
-      error: erro => console.log(erro),
+      error: erro => console.error(erro),
     }
+
     )
   }
 
+  livrosResultadoParaLivros(items): Livro[] {
+    const livros: Livro[] = []
 
-  livrosResultadosParaLivros(items): Livro[]{
-    const livros: Livro[]=[]
-
-    items.forEach(item=> {
-      livros.push(this.livro ={
+    items.forEach(item => {
+      livros.push(this.livro = {
         title: item.volumeInfo?.title,
         authors: item.volumeInfo?.authors,
         publisher: item.volumeInfo?.publisher,
@@ -45,10 +46,7 @@ export class ListaLivrosComponent implements OnDestroy {
     return livros
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.subscription.unsubscribe()
   }
 }
-
-
-

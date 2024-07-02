@@ -26,7 +26,7 @@ export class ModalLivroComponent {
       body.style.overflow = "hidden";
     }
   }
-  
+
   lerPrevia() {
     window.open( '_blank');
   }
